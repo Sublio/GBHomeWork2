@@ -18,7 +18,6 @@ class NewsFeedPhotoPost {
     var photoUrls: [String] = []
 
     convenience init (json: SwiftyJSON.JSON) {
-        // TODO: доделать
         self.init()
         self.postId = json["post_id"].int ?? 0
         self.photosCount = json["photos"]["count"].int ?? 0

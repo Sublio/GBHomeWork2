@@ -60,7 +60,6 @@ class NetworkManager {
         ]
 
         AF.request(scheme + host + path, method: .get, parameters: parameters).response { response in
-            var results: [Photo] = []
             switch response.result {
             case .failure(let error):
                 completion(.failure(error))
@@ -68,13 +67,8 @@ class NetworkManager {
                 guard let data = data,
                       let json = try? JSON(data: data) else { return }
                 let itemsJSON = json["response"]["items"].arrayValue
-                for item in itemsJSON {
-                    let pictureSizesArray = item["sizes"].arrayValue
-                    guard let mediumPictureSize = pictureSizesArray.last else { return }// largest size from array of sizes
-                    let photo = Photo(json: mediumPictureSize)
-                    results.append(photo)
-                }
-                completion(.success(results))
+                let photos = itemsJSON.compactMap({Photo(json: $0)})
+                completion(.success(photos))
             }
         }
     }

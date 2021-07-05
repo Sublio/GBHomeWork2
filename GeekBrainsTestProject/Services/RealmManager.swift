@@ -140,19 +140,6 @@ class RealmManager {
         return realm?.object(ofType: Friend.self, forPrimaryKey: id)
     }
 
-    func updatePhotosStorageForFriend(friendId: Int, photo: Photo) {
-        let realm = try? Realm()
-        if let user = realm?.object(ofType: Friend.self, forPrimaryKey: friendId) {
-            do {
-                try realm?.write({
-                    user.friendPhotos.append(photo)
-                })
-            } catch {
-                print(error)
-            }
-        }
-    }
-
     // return Result tyle
     func getResults<T: Object>(selectedType: T.Type) -> Results<T>? {
         if let realm = try? Realm(configuration: configuration) {

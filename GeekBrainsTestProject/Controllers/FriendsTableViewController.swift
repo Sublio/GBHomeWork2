@@ -93,7 +93,10 @@ class FriendsTableViewController: UITableViewController {
         collectionViewFlowLayout.scrollDirection = .vertical
         collectionViewFlowLayout.minimumLineSpacing = 2
         collectionViewFlowLayout.minimumInteritemSpacing = 2
-        let collectionView = PhotosCollectionViewController(collectionViewLayout: collectionViewFlowLayout)
+        let collectionView = ASPhotosController()
+        // let collectionView = PhotosCollectionViewController(collectionViewLayout: collectionViewFlowLayout)
+        collectionView.modalTransitionStyle = .crossDissolve
+        collectionView.modalPresentationStyle = .overFullScreen
         self.delegate = collectionView
         navigationController?.pushViewController(collectionView, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)

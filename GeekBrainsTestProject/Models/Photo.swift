@@ -7,23 +7,30 @@
 
 import Foundation
 import SwiftyJSON
-import RealmSwift
 
-@objcMembers
-class Photo: RealmSwift.Object {
+class Photo {
 
-    dynamic var photoStringUrlMedium: String = ""
-    dynamic var photoId: String = UUID().uuidString
-    dynamic var picture: Data = Data()
-
-    let friends = LinkingObjects(fromType: Friend.self, property: "friendPhotos")
+    dynamic var id: Int = 0
+    dynamic var sizes: [PhotoSize] = []
 
     convenience init(json: SwiftyJSON.JSON) {
         self.init()
-        self.photoStringUrlMedium = json["url"].string ?? ""
+        self.id = json["id"].intValue
+        self.sizes = json["sizes"].arrayValue.compactMap { PhotoSize($0)}
     }
 
-    override static func primaryKey() -> String? {
-        "photoId"
+}
+
+struct PhotoSize {
+    let type: String
+    let height: Int
+    let width: Int
+    let url: String
+
+    init(_ json: JSON) {
+        self.type = json["type"].stringValue
+        self.height = json["height"].intValue
+        self.width = json["width"].intValue
+        self.url = json["url"].stringValue
     }
 }

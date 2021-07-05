@@ -22,7 +22,7 @@ class NewsFeedTableViewController: UITableViewController, UITableViewDataSourceP
     }
 
     private var feedNextFromAnchor: String?
-    
+
     private var nextFrom: String = ""
     private var isLoading: Bool = false
 
@@ -50,10 +50,10 @@ class NewsFeedTableViewController: UITableViewController, UITableViewDataSourceP
     @objc func refreshControlPulled() {
         self.refreshControl?.beginRefreshing()
         let mostFreshNewsDate = self.posts.first!.date + 2
-        vkService.getNewsFeedTextPosts(startTime: mostFreshNewsDate) { [weak self] posts, nextFromAnchor in
+        vkService.getNewsFeedTextPosts(startTime: mostFreshNewsDate) { [weak self] posts, _ in
             guard let self = self else { return }
             self.refreshControl?.endRefreshing()
-            
+
             guard posts.count > 0 else { return }
             self.posts.insert(contentsOf: posts, at: 0)
         }
@@ -100,14 +100,11 @@ class NewsFeedTableViewController: UITableViewController, UITableViewDataSourceP
         case 0, 3:
             return 50
         case 1:
-            let maximumCellHeight: CGFloat = 100
-            let text = posts[indexPath.section].text
-            guard !text.isEmpty else { return 0 }
-            let availableWidth = tableView.frame.width - 2 * TextPostTableViewCell.horizontalInset
-            let desiredLabelHeight = self.getLabelSize(text: text, font: textFont, availableWidth: availableWidth).height + 2 * TextPostTableViewCell.verticalInset
-
-            let isOpened = openedTextCells[indexPath] ?? false
-            return isOpened ? desiredLabelHeight : min(maximumCellHeight, desiredLabelHeight)
+            if posts[indexPath.section].text.isEmpty {
+                return 0
+            } else {
+                return UITableView.automaticDimension
+            }
         case 2:
             let aspectRatio = posts[indexPath.section].aspectRatio
             return tableView.frame.width * aspectRatio
@@ -144,7 +141,7 @@ class NewsFeedTableViewController: UITableViewController, UITableViewDataSourceP
         let size = CGSize(width: ceil(width), height: ceil(height))
         return size
     }
-    
+
     // MARK: - Prefetching Delegate
     func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
         guard let feedNextFromAnchor = self.feedNextFromAnchor,
@@ -158,7 +155,7 @@ class NewsFeedTableViewController: UITableViewController, UITableViewDataSourceP
             self.isLoading = false
             self.feedNextFromAnchor = nextFromAnchor
         }
-        
+
         print("Prefetch batches")
     }
 }

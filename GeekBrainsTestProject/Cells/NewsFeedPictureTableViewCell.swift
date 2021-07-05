@@ -25,6 +25,7 @@ class NewsFeedPictureTableViewCell: UITableViewCell {
 
     func configure(with post: NewsFeedPost) {
         guard let photoURL = URL(string: post.postPhotoURL) else { return }
+        self.picture.kf.indicatorType = .activity
         self.picture.kf.setImage(with: photoURL)
     }
 

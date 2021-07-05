@@ -9,10 +9,7 @@ import UIKit
 
 class TextPostTableViewCell: UITableViewCell {
 
-    static let horizontalInset: CGFloat = 12
-    static let verticalInset: CGFloat = 8
-
-    @IBOutlet weak var textPost: UITextView!
+    @IBOutlet weak var postText: UILabel!
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -32,7 +29,13 @@ class TextPostTableViewCell: UITableViewCell {
     }
 
     func configure(with post: NewsFeedPost) {
-        self.textPost.text = post.text
+        self.postText.text = post.text
+        self.postText.numberOfLines = 0
+        let maximumLabelSize: CGSize = CGSize(width: 280, height: 9999)
+        let expectedLabelSize: CGSize = self.postText.sizeThatFits(maximumLabelSize)
+        var newFrame: CGRect = self.postText.frame
+        newFrame.size.height = expectedLabelSize.height
+        self.postText.frame = newFrame
     }
 
 }

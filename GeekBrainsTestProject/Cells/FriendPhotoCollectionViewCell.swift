@@ -6,10 +6,10 @@
 //
 
 import UIKit
+import AsyncDisplayKit
 
 class FriendPhotoCollectionViewCell: UICollectionViewCell {
 
-    lazy var spinner = UIActivityIndicatorView(style: .medium)
     @IBOutlet weak var photo: UIImageView!
 
     let likedView: LikedCustomView = {
@@ -34,10 +34,9 @@ class FriendPhotoCollectionViewCell: UICollectionViewCell {
         self.photo.contentMode = .scaleAspectFill
     }
 
-    private func commonInit() {
-        spinner.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(spinner)
-        spinner.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        spinner.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+    func configure(with photo: Photo) {
+        guard let url = URL(string: photo.sizes.last?.url ?? "") else { return }
+        self.photo.kf.indicatorType = .activity
+        self.photo.kf.setImage(with: url)
     }
 }

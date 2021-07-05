@@ -1,0 +1,6 @@
+framework module Pods_GeekBrainsTestProject_GeekBrainsTestProjectUITests {
+  umbrella header "Pods-GeekBrainsTestProject-GeekBrainsTestProjectUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
